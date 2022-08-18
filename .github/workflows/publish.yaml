@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    strategy:
+      matrix:
+        base-image:
+          - quay.io/c3os/core-opensuse:latest
+        rke2-version:
+          - v1.24.3+rke2r1
+          - v1.23.9+rke2r1
+          - v1.22.12+rke2r1
+          - v1.21.14+rke2r1
+        platform:
+          - linux/amd64
+    env:
+      REGISTRY: quay.io
+      REGISTRY_USER: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker-practice/actions-setup-docker@master
+      - uses: earthly/actions-setup@v1
+        with:
+          version: "latest"
+      - run: echo $REGISTRY_PASSWORD | docker login -u $REGISTRY_USER --password-stdin $REGISTRY
+      - run: env | grep ACTIONS_ID_TOKEN_REQUEST > .env
+      - run: env | grep REGISTRY >> .env
+      - run: earthly --ci --push --platform=${{ matrix.platform }} +docker --RKE2_VERSION=${{ matrix.rke2-version }} --BASE_IMAGE=${{ matrix.base-image }}
+      - run: earthly --ci +cosign --RKE2_VERSION=${{ matrix.rke2-version }} --BASE_IMAGE=${{ matrix.base-image }}
+
