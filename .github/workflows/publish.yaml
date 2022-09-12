@@ -14,6 +14,7 @@ jobs:
       matrix:
         base-image:
           - quay.io/c3os/core-opensuse:latest
+          - quay.io/c3os/core-ubuntu:latest
         rke2-version:
           - v1.24.3+rke2r1
           - v1.23.9+rke2r1
