@@ -73,6 +73,7 @@ docker:
 
     ENV INSTALL_RKE2_METHOD="tar"
     ENV INSTALL_RKE2_SKIP_RELOAD="true"
+    ENV INSTALL_RKE2_TAR_PREFIX="/usr"
     RUN ./install_rke2.sh && rm install_rke2.sh
     COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
 
