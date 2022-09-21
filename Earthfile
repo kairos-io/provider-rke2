@@ -1,8 +1,8 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/c3os/core-opensuse:latest
-ARG IMAGE_REPOSITORY=quay.io/c3os
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse:latest
+ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.32.4
 ARG GOLINT_VERSION=v1.46.2
