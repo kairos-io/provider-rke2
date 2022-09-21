@@ -26,9 +26,9 @@ jobs:
     strategy:
       matrix:
         base-image:
-          - quay.io/c3os/core-opensuse:v1.0.0-rc1
-          - quay.io/c3os/core-opensuse:latest
-          - quay.io/c3os/core-ubuntu:latest
+          - quay.io/kairos/core-opensuse:v1.0.0-rc2
+          - quay.io/kairos/core-opensuse:latest
+          - quay.io/kairos/core-ubuntu:latest
         rke2-version:
           - v1.24.4+rke2r1
           - v1.23.10+rke2r1
