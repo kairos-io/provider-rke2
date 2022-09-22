@@ -77,7 +77,7 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 						},
 					},
 					Commands: []string{
-						fmt.Sprintf("jq -rs 'reduce .[] as $item ({}; . * $item)' %s/*.yaml > /etc/rancher/rke2/config.yaml", configurationPath),
+						fmt.Sprintf("jq -s 'def flatten: reduce .[] as $i([]; if $i | type == \"array\" then . + ($i | flatten) else . + [$i] end); [.[] | to_entries] | flatten | reduce .[] as $dot ({}; .[$dot.key] += $dot.value)' %s/*.yaml > /etc/rancher/rke2/config.yaml", configurationPath),
 					},
 				},
 				{
