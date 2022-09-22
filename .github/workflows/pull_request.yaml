@@ -30,6 +30,7 @@ jobs:
           - quay.io/kairos/core-opensuse:latest
           - quay.io/kairos/core-ubuntu:latest
         rke2-version:
+          - v1.25.0+rke2r1
           - v1.24.4+rke2r1
           - v1.23.10+rke2r1
           - v1.22.13+rke2r1
