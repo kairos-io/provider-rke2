@@ -6,6 +6,10 @@
 *.dylib
 provider-rke2
 
+# Directories of IDEs, vendor
+.idea/
+vendor/
+
 # Test binary, built with `go test -c`
 *.test
 

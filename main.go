@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/c3os-io/c3os/sdk/clusterplugin"
 	yip "github.com/mudler/yip/pkg/schema"
@@ -13,7 +15,8 @@ import (
 )
 
 const (
-	configurationPath = "/etc/rancher/rke2/config.d"
+	configurationPath       = "/etc/rancher/rke2/config.d"
+	containerdEnvConfigPath = "/etc/default"
 
 	serverSystemName = "rke2-server"
 	agentSystemName  = "rke2-agent"
@@ -75,6 +78,11 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 							Permissions: 0400,
 							Content:     string(options),
 						},
+						{
+							Path:        filepath.Join(containerdEnvConfigPath, systemName),
+							Permissions: 0400,
+							Content:     containerdProxyEnv(),
+						},
 					},
 					Commands: []string{
 						fmt.Sprintf("jq -s 'def flatten: reduce .[] as $i([]; if $i | type == \"array\" then . + ($i | flatten) else . + [$i] end); [.[] | to_entries] | flatten | reduce .[] as $dot ({}; .[$dot.key] += $dot.value)' %s/*.yaml > /etc/rancher/rke2/config.yaml", configurationPath),
@@ -96,6 +104,23 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	return cfg
+}
+
+func containerdProxyEnv() string {
+	var proxy []string
+	if len(os.Getenv("HTTP_PROXY")) > 0 {
+		proxy = append(proxy, "CONTAINERD_HTTP_PROXY=${HTTP_PROXY}")
+	}
+
+	if len(os.Getenv("HTTPS_PROXY")) > 0 {
+		proxy = append(proxy, "CONTAINERD_HTTPS_PROXY=${HTTPS_PROXY}")
+	}
+
+	if len(os.Getenv("NO_PROXY")) > 0 {
+		proxy = append(proxy, "CONTAINERD_NO_PROXY=${NO_PROXY}")
+	}
+
+	return strings.Join(proxy, "\n")
 }
 
 func main() {
