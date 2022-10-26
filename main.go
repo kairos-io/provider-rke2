@@ -20,10 +20,9 @@ const (
 )
 
 type RKE2Config struct {
-	ClusterInit bool     `yaml:"cluster-init"`
-	Token       string   `yaml:"token"`
-	Server      string   `yaml:"server"`
-	TLSSan      []string `yaml:"tls-san"`
+	Token  string   `yaml:"token"`
+	Server string   `yaml:"server"`
+	TLSSan []string `yaml:"tls-san"`
 }
 
 func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
@@ -37,7 +36,6 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	if cluster.Role == clusterplugin.RoleInit {
-		rke2Config.ClusterInit = true
 		rke2Config.Server = ""
 
 	}
