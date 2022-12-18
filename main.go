@@ -118,7 +118,7 @@ func proxyEnv(userOptions []byte, proxyMap map[string]string) string {
 	var proxy []string
 
 	httpProxy := proxyMap["HTTP_PROXY"]
-	httpsProxy := proxyMap["HTTP_PROXY"]
+	httpsProxy := proxyMap["HTTPS_PROXY"]
 	noProxy := getNoProxy(userOptions, proxyMap["NO_PROXY"])
 
 	if len(httpProxy) > 0 {
