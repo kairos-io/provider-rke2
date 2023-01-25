@@ -116,19 +116,32 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 
 func proxyEnv(userOptions []byte, proxyMap map[string]string) string {
 	var proxy []string
+	var noProxy string
+	var isProxyConfigured bool
 
 	httpProxy := proxyMap["HTTP_PROXY"]
 	httpsProxy := proxyMap["HTTPS_PROXY"]
-	noProxy := getNoProxy(userOptions, proxyMap["NO_PROXY"])
+	userNoProxy := proxyMap["NO_PROXY"]
+	defaultNoProxy := getDefaultNoProxy(userOptions)
 
 	if len(httpProxy) > 0 {
 		proxy = append(proxy, fmt.Sprintf("HTTP_PROXY=%s", httpProxy))
 		proxy = append(proxy, fmt.Sprintf("CONTAINERD_HTTP_PROXY=%s", httpProxy))
+		isProxyConfigured = true
 	}
 
 	if len(httpsProxy) > 0 {
 		proxy = append(proxy, fmt.Sprintf("HTTPS_PROXY=%s", httpsProxy))
 		proxy = append(proxy, fmt.Sprintf("CONTAINERD_HTTPS_PROXY=%s", httpsProxy))
+		isProxyConfigured = true
+	}
+
+	if isProxyConfigured {
+		noProxy = defaultNoProxy
+	}
+
+	if len(userNoProxy) > 0 {
+		noProxy = noProxy + "," + userNoProxy
 	}
 
 	if len(noProxy) > 0 {
@@ -139,28 +152,29 @@ func proxyEnv(userOptions []byte, proxyMap map[string]string) string {
 	return strings.Join(proxy, "\n")
 }
 
-func getNoProxy(userOptions []byte, noProxy string) string {
+func getDefaultNoProxy(userOptions []byte) string {
 
-	if len(noProxy) > 0 {
-		data := make(map[string]interface{})
-		err := json.Unmarshal(userOptions, &data)
-		if err != nil {
-			fmt.Println("error while unmarshalling user options", err)
-		}
+	var noProxy string
 
-		if data != nil {
-			clusterCIDR := data["cluster-cidr"].(string)
-			serviceCIDR := data["service-cidr"].(string)
-
-			if len(clusterCIDR) > 0 {
-				noProxy = noProxy + "," + clusterCIDR
-			}
-			if len(serviceCIDR) > 0 {
-				noProxy = noProxy + "," + serviceCIDR
-			}
-			noProxy = noProxy + "," + getNodeCIDR() + "," + K8S_NO_PROXY
-		}
+	data := make(map[string]interface{})
+	err := json.Unmarshal(userOptions, &data)
+	if err != nil {
+		fmt.Println("error while unmarshalling user options", err)
 	}
+
+	if data != nil {
+		clusterCIDR := data["cluster-cidr"].(string)
+		serviceCIDR := data["service-cidr"].(string)
+
+		if len(clusterCIDR) > 0 {
+			noProxy = noProxy + "," + clusterCIDR
+		}
+		if len(serviceCIDR) > 0 {
+			noProxy = noProxy + "," + serviceCIDR
+		}
+		noProxy = noProxy + "," + getNodeCIDR() + "," + K8S_NO_PROXY
+	}
+
 	return noProxy
 }
 
