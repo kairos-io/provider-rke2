@@ -84,6 +84,7 @@ docker:
     ENV OS_LABEL=${BASE_IMAGE_TAG}_${RKE2_VERSION_TAG}_${VERSION}
     RUN envsubst >/etc/os-release </usr/lib/os-release.tmpl
     RUN echo "export PATH=/var/lib/rancher/rke2/bin:$PATH" >> /etc/profile
+    RUN cp -R /var/lib/rancher/rke2/bin/ctr /usr/bin/ctr
 
     RUN mkdir -p /var/lib/rancher/rke2/agent/images
     RUN curl -L --output /var/lib/rancher/rke2/agent/images/images.tar.zst "https://github.com/rancher/rke2/releases/download/$RKE2_VERSION/rke2-images-core.linux-amd64.tar.zst"
