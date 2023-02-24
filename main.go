@@ -22,6 +22,7 @@ const (
 	serverSystemName = "rke2-server"
 	agentSystemName  = "rke2-agent"
 	K8S_NO_PROXY     = ".svc,.svc.cluster,.svc.cluster.local"
+	localImagesPath  = "/opt/content/images"
 )
 
 type RKE2Config struct {
@@ -31,6 +32,8 @@ type RKE2Config struct {
 }
 
 func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
+
+	var importStage yip.Stage
 	rke2Config := RKE2Config{
 		Token: cluster.ClusterToken,
 		// RKE2 server listens on 9345 for node registration https://docs.rke2.io/install/quickstart/#3-configure-the-rke2-agent-service
@@ -84,30 +87,48 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		})
 	}
 
+	stages := []yip.Stage{
+		{
+			Name:  " Install RKE2 Configuration Files",
+			Files: files,
+
+			Commands: []string{
+				fmt.Sprintf("jq -s 'def flatten: reduce .[] as $i([]; if $i | type == \"array\" then . + ($i | flatten) else . + [$i] end); [.[] | to_entries] | flatten | reduce .[] as $dot ({}; .[$dot.key] += $dot.value)' %s/*.yaml > /etc/rancher/rke2/config.yaml", configurationPath),
+			},
+		},
+	}
+
+	if cluster.ImportLocalImages {
+		if cluster.LocalImagesPath == "" {
+			cluster.LocalImagesPath = localImagesPath
+		}
+
+		importStage = yip.Stage{
+			Commands: []string{
+				"chmod +x /opt/import.sh",
+				fmt.Sprintf("/bin/sh /opt/rke2/scripts/import.sh %s > /var/log/import.log", cluster.LocalImagesPath),
+			},
+			If: fmt.Sprintf("[  -d %s ]", cluster.LocalImagesPath),
+		}
+		stages = append(stages, importStage)
+	}
+
+	stages = append(stages, yip.Stage{
+		Name: "Enable Systemd Services",
+		Systemctl: yip.Systemctl{
+			Enable: []string{
+				systemName,
+			},
+			Start: []string{
+				systemName,
+			},
+		},
+	})
+
 	cfg := yip.YipConfig{
 		Name: "RKE2 Kairos Cluster Provider",
 		Stages: map[string][]yip.Stage{
-			"boot.before": {
-				{
-					Name:  " Install RKE2 Configuration Files",
-					Files: files,
-
-					Commands: []string{
-						fmt.Sprintf("jq -s 'def flatten: reduce .[] as $i([]; if $i | type == \"array\" then . + ($i | flatten) else . + [$i] end); [.[] | to_entries] | flatten | reduce .[] as $dot ({}; .[$dot.key] += $dot.value)' %s/*.yaml > /etc/rancher/rke2/config.yaml", configurationPath),
-					},
-				},
-				{
-					Name: "Enable Systemd Services",
-					Systemctl: yip.Systemctl{
-						Enable: []string{
-							systemName,
-						},
-						Start: []string{
-							systemName,
-						},
-					},
-				},
-			},
+			"boot.before": stages,
 		},
 	}
 
