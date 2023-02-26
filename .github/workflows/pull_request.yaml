@@ -17,7 +17,7 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - uses: earthly/actions-setup@v1
         with:
-          version: "latest"
+          version: "v0.6.30"
       - run: earthly --ci +lint
   build:
     runs-on: ubuntu-latest
@@ -41,5 +41,5 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - uses: earthly/actions-setup@v1
         with:
-          version: "latest"
+          version: "v0.6.30"
       - run: earthly --ci --platform=${{ matrix.platform }} +docker --RKE2_VERSION=${{ matrix.rke2-version }} --BASE_IMAGE=${{ matrix.base-image }}
