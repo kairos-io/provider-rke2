@@ -1,7 +1,7 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/kairos/core-opensuse:latest
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:latest
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.33.0
@@ -83,6 +83,9 @@ docker:
     ENV OS_VERSION=${RKE2_VERSION_TAG}_${VERSION}
     ENV OS_LABEL=${BASE_IMAGE_TAG}_${RKE2_VERSION_TAG}_${VERSION}
     RUN envsubst >/etc/os-release </usr/lib/os-release.tmpl
+    RUN echo "export PATH=/var/lib/rancher/rke2/bin:$PATH" >> /etc/profile
+    RUN mkdir -p /opt/rke2/scripts/
+    COPY scripts/* /opt/rke2/scripts/
 
     RUN mkdir -p /var/lib/rancher/rke2/agent/images
     RUN curl -L --output /var/lib/rancher/rke2/agent/images/images.tar.zst "https://github.com/rancher/rke2/releases/download/$RKE2_VERSION/rke2-images-core.linux-amd64.tar.zst"
