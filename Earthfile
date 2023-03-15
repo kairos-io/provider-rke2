@@ -51,6 +51,14 @@ build-provider:
     FROM +go-deps
     DO +BUILD_GOLANG --BIN=agent-provider-rke2 --SRC=main.go
 
+build-provider-package:
+    DO +VERSION
+    ARG VERSION=$(cat VERSION)
+    FROM scratch
+    COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
+    COPY scripts /opt/rke2/scripts
+    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2:${VERSION}
+
 lint:
     FROM golang:$GOLANG_VERSION
     RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s $GOLINT_VERSION
@@ -120,3 +128,7 @@ cosign:
 
     RUN cosign sign $IMAGE_REPOSITORY/${BASE_IMAGE_NAME}-rke2:${RKE2_VERSION_TAG}
     RUN cosign sign $IMAGE_REPOSITORY/${BASE_IMAGE_NAME}-rke2:${RKE2_VERSION_TAG}_${VERSION}
+
+provider-package-all-platforms:
+     BUILD --platform=linux/amd64 +build-provider-package
+     BUILD --platform=linux/arm64 +build-provider-package
