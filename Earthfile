@@ -5,8 +5,8 @@ ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:latest
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.34.0
-ARG GOLINT_VERSION=v1.50.1
-ARG GOLANG_VERSION=1.19.2
+ARG GOLINT_VERSION=v1.52.2
+ARG GOLANG_VERSION=1.20.3
 
 ARG RKE2_VERSION=latest
 ARG BASE_IMAGE_NAME=$(echo $BASE_IMAGE | grep -o [^/]*: | rev | cut -c2- | rev)
