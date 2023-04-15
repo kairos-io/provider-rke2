@@ -4,7 +4,7 @@ FROM alpine
 ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:latest
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
-ARG LUET_VERSION=0.33.0
+ARG LUET_VERSION=0.34.0
 ARG GOLINT_VERSION=v1.50.1
 ARG GOLANG_VERSION=1.19.2
 
@@ -12,6 +12,10 @@ ARG RKE2_VERSION=latest
 ARG BASE_IMAGE_NAME=$(echo $BASE_IMAGE | grep -o [^/]*: | rev | cut -c2- | rev)
 ARG BASE_IMAGE_TAG=$(echo $BASE_IMAGE | grep -o :.* | cut -c2-)
 ARG RKE2_VERSION_TAG=$(echo $RKE2_VERSION | sed s/+/-/)
+
+luet:
+    FROM quay.io/luet/base:$LUET_VERSION
+    SAVE ARTIFACT /usr/bin/luet /luet
 
 build-cosign:
     FROM gcr.io/projectsigstore/cosign:v1.13.1
@@ -78,6 +82,7 @@ docker:
     END
 
     COPY install_rke2.sh .
+     COPY +luet/luet /usr/bin/luet
 
     ENV INSTALL_RKE2_METHOD="tar"
     ENV INSTALL_RKE2_SKIP_RELOAD="true"
