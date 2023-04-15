@@ -82,6 +82,7 @@ docker:
     END
 
     COPY install_rke2.sh .
+     COPY +luet/luet /usr/bin/luet
 
     ENV INSTALL_RKE2_METHOD="tar"
     ENV INSTALL_RKE2_SKIP_RELOAD="true"
