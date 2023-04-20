@@ -95,7 +95,7 @@ docker:
     ENV OS_REPO=${IMAGE_REPOSITORY}
     ENV OS_VERSION=${RKE2_VERSION_TAG}_${VERSION}
     ENV OS_LABEL=${BASE_IMAGE_TAG}_${RKE2_VERSION_TAG}_${VERSION}
-    RUN envsubst >/etc/os-release </usr/lib/os-release.tmpl
+    RUN envsubst >>/etc/os-release </usr/lib/os-release.tmpl
     RUN echo "export PATH=/var/lib/rancher/rke2/bin:$PATH" >> /etc/profile
     RUN mkdir -p /opt/rke2/scripts/
     COPY scripts/* /opt/rke2/scripts/
