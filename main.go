@@ -23,6 +23,8 @@ const (
 	agentSystemName  = "rke2-agent"
 	K8S_NO_PROXY     = ".svc,.svc.cluster,.svc.cluster.local"
 	localImagesPath  = "/opt/content/images"
+	BootBefore       = "boot.before"
+	NetworkAfter     = "network.after"
 )
 
 type RKE2Config struct {
@@ -79,12 +81,14 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		},
 	}
 
+	stage := BootBefore
 	if len(proxyValues) > 0 {
 		files = append(files, yip.File{
 			Path:        filepath.Join(containerdEnvConfigPath, systemName),
 			Permissions: 0400,
 			Content:     proxyValues,
 		})
+		stage = NetworkAfter
 	}
 
 	stages := []yip.Stage{
@@ -128,7 +132,7 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	cfg := yip.YipConfig{
 		Name: "RKE2 Kairos Cluster Provider",
 		Stages: map[string][]yip.Stage{
-			"boot.before": stages,
+			stage: stages,
 		},
 	}
 
