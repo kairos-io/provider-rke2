@@ -1,12 +1,12 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:latest
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.2.0
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.34.0
 ARG GOLINT_VERSION=v1.52.2
-ARG GOLANG_VERSION=1.19.8
+ARG GOLANG_VERSION=1.19.10
 
 ARG RKE2_VERSION=latest
 ARG BASE_IMAGE_NAME=$(echo $BASE_IMAGE | grep -o [^/]*: | rev | cut -c2- | rev)
@@ -26,7 +26,7 @@ go-deps:
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
-    RUN apt-get update && apt-get install -y upx
+    RUN apt-get update
     SAVE ARTIFACT go.mod AS LOCAL go.mod
     SAVE ARTIFACT go.sum AS LOCAL go.sum
 
@@ -37,7 +37,7 @@ BUILD_GOLANG:
     ARG BIN
     ARG SRC
 
-    RUN go build -ldflags "-s -w" -o ${BIN} ./${SRC} && upx ${BIN}
+    RUN go build -ldflags "-s -w" -o ${BIN} ./${SRC}
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
 
 VERSION:
