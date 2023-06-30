@@ -1,7 +1,7 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.1.1
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.1.2
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.34.0
