@@ -1,7 +1,7 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.3.0
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.3.2
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.34.0
@@ -22,7 +22,7 @@ build-cosign:
     SAVE ARTIFACT /ko-app/cosign cosign
 
 go-deps:
-    FROM golang:$GOLANG_VERSION
+    FROM gcr.io/spectro-dev-public/golang:1.19-debian
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
