@@ -1,7 +1,7 @@
 VERSION 0.6
 FROM alpine
 
-ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.3.0
+ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.3.2
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.34.0
@@ -12,6 +12,7 @@ ARG RKE2_VERSION=latest
 ARG BASE_IMAGE_NAME=$(echo $BASE_IMAGE | grep -o [^/]*: | rev | cut -c2- | rev)
 ARG BASE_IMAGE_TAG=$(echo $BASE_IMAGE | grep -o :.* | cut -c2-)
 ARG RKE2_VERSION_TAG=$(echo $RKE2_VERSION | sed s/+/-/)
+ARG FIPS_ENABLED=false
 
 luet:
     FROM quay.io/luet/base:$LUET_VERSION
@@ -22,7 +23,7 @@ build-cosign:
     SAVE ARTIFACT /ko-app/cosign cosign
 
 go-deps:
-    FROM golang:$GOLANG_VERSION
+    FROM gcr.io/spectro-dev-public/golang:1.19-debian
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
@@ -36,6 +37,15 @@ BUILD_GOLANG:
     COPY . ./
     ARG BIN
     ARG SRC
+
+    IF $FIPS_ENABLED
+        ARG LDFLAGS=-s -w -linkmode=external -extldflags=-static
+        ENV CGO_ENABLED=1
+        ENV GOEXPERIMENT=boringcrypto
+    ELSE
+        ARG LDFLAGS=-s -w
+        ENV CGO_ENABLED=0
+    END
 
     RUN go build -ldflags "-s -w" -o ${BIN} ./${SRC}
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
@@ -62,6 +72,14 @@ build-provider-package:
     COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
     COPY scripts /opt/rke2/scripts
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2:${VERSION}
+
+build-provider-fips-package:
+    DO +VERSION
+    ARG VERSION=$(cat VERSION)
+    FROM scratch
+    COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
+    COPY scripts /opt/rke2/scripts
+    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2-fips:${VERSION}
 
 lint:
     FROM golang:$GOLANG_VERSION
@@ -137,3 +155,7 @@ cosign:
 provider-package-all-platforms:
      BUILD --platform=linux/amd64 +build-provider-package
      BUILD --platform=linux/arm64 +build-provider-package
+
+provider-fips-package-all-platforms:
+     BUILD --platform=linux/amd64 +build-provider-fips-package
+     #BUILD --platform=linux/arm64 +build-provider-fips-package
