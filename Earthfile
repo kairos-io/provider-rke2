@@ -158,4 +158,4 @@ provider-package-all-platforms:
 
 provider-fips-package-all-platforms:
      BUILD --platform=linux/amd64 +build-provider-fips-package
-     BUILD --platform=linux/arm64 +build-provider-fips-package
+     #BUILD --platform=linux/arm64 +build-provider-fips-package
