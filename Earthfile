@@ -136,4 +136,4 @@ cosign:
 
 provider-package-all-platforms:
      BUILD --platform=linux/amd64 +build-provider-package
-     BUILD --platform=linux/arm64 +build-provider-package
+     #BUILD --platform=linux/arm64 +build-provider-package
