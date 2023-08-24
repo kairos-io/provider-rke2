@@ -47,7 +47,7 @@ BUILD_GOLANG:
         ENV CGO_ENABLED=0
     END
 
-    RUN go build -ldflags "-s -w" -o ${BIN} ./${SRC}
+    RUN go build -ldflags "${LDFLAGS}" -o ${BIN} ./${SRC}
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
 
 VERSION:
