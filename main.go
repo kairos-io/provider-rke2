@@ -89,7 +89,7 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 
 	stages := []yip.Stage{
 		{
-			Name:  " Install RKE2 Configuration Files",
+			Name:  "Install RKE2 Configuration Files",
 			Files: files,
 
 			Commands: []string{
@@ -115,13 +115,9 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 
 	stages = append(stages, yip.Stage{
 		Name: "Enable Systemd Services",
-		Systemctl: yip.Systemctl{
-			Enable: []string{
-				systemName,
-			},
-			Start: []string{
-				systemName,
-			},
+		Commands: []string{
+			fmt.Sprintf("systemctl enable %s", systemName),
+			fmt.Sprintf("systemctl restart %s", systemName),
 		},
 	})
 
