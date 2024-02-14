@@ -105,7 +105,6 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 
 		importStage = yip.Stage{
 			Commands: []string{
-				"chmod +x /opt/import.sh",
 				fmt.Sprintf("/bin/sh /opt/rke2/scripts/import.sh %s > /var/log/import.log", cluster.LocalImagesPath),
 			},
 			If: fmt.Sprintf("[  -d %s ]", cluster.LocalImagesPath),
