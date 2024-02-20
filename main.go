@@ -112,17 +112,24 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		stages = append(stages, importStage)
 	}
 
-	stages = append(stages, yip.Stage{
-		Name: "Enable Systemd Services",
-		Systemctl: yip.Systemctl{
-			Enable: []string{
-				systemName,
-			},
-			Start: []string{
-				systemName,
+	stages = append(stages,
+		yip.Stage{
+			Name: "Waiting to finish extracting content",
+			Commands: []string{
+				"sleep 120",
 			},
 		},
-	})
+		yip.Stage{
+			Name: "Enable Systemd Services",
+			Systemctl: yip.Systemctl{
+				Enable: []string{
+					systemName,
+				},
+				Start: []string{
+					systemName,
+				},
+			},
+		})
 
 	cfg := yip.YipConfig{
 		Name: "RKE2 Kairos Cluster Provider",

@@ -35,28 +35,3 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }} 
       - run: earthly --ci  +provider-package-all-platforms --IMAGE_REPOSITORY=ghcr.io/kairos-io
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    strategy:
-      matrix:
-        base-image:
-          - quay.io/kairos/core-opensuse-leap:v2.3.2
-          - quay.io/kairos/core-ubuntu-20-lts:v2.3.2
-          - quay.io/kairos/core-ubuntu-22-lts:v2.3.2
-        rke2-version:
-          - v1.26.4+rke2r1
-          - v1.25.2+rke2r1
-          - v1.24.6+rke2r1
-          - v1.23.12+rke2r1
-          - v1.22.15+rke2r1
-        platform:
-          - linux/amd64
-    steps:
-      - uses: actions/checkout@v2
-      - uses: docker-practice/actions-setup-docker@master
-      - uses: earthly/actions-setup@v1
-        with:
-          version: "v0.6.30"
-      - run: earthly --ci --platform=${{ matrix.platform }} +docker --RKE2_VERSION=${{ matrix.rke2-version }} --BASE_IMAGE=${{ matrix.base-image }}
