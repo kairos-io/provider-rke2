@@ -21,7 +21,7 @@ const (
 
 	serverSystemName = "rke2-server"
 	agentSystemName  = "rke2-agent"
-	K8S_NO_PROXY     = ".svc,.svc.cluster,.svc.cluster.local"
+	K8SNoProxy       = ".svc,.svc.cluster,.svc.cluster.local"
 	localImagesPath  = "/opt/content/images"
 )
 
@@ -89,7 +89,7 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 
 	stages := []yip.Stage{
 		{
-			Name:  " Install RKE2 Configuration Files",
+			Name:  "Install RKE2 Configuration Files",
 			Files: files,
 
 			Commands: []string{
@@ -121,13 +121,9 @@ func clusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		},
 		yip.Stage{
 			Name: "Enable Systemd Services",
-			Systemctl: yip.Systemctl{
-				Enable: []string{
-					systemName,
-				},
-				Start: []string{
-					systemName,
-				},
+			Commands: []string{
+				fmt.Sprintf("systemctl enable %s", systemName),
+				fmt.Sprintf("systemctl restart %s", systemName),
 			},
 		})
 
@@ -199,7 +195,7 @@ func getDefaultNoProxy(userOptions []byte) string {
 		if len(serviceCIDR) > 0 {
 			noProxy = noProxy + "," + serviceCIDR
 		}
-		noProxy = noProxy + "," + getNodeCIDR() + "," + K8S_NO_PROXY
+		noProxy = noProxy + "," + getNodeCIDR() + "," + K8SNoProxy
 	}
 
 	return noProxy

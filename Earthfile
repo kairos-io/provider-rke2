@@ -43,7 +43,7 @@ BUILD_GOLANG:
         RUN assert-fips.sh ${BIN}
         RUN assert-static.sh ${BIN}
     ELSE
-        RUN go-build.sh -a -o ${BIN} ./${SRC}
+        RUN go-build-static.sh -a -o ${BIN} ./${SRC}
     END
 
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
