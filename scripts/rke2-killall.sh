@@ -65,9 +65,9 @@ STYLUS_ROOT="${STYLUS_ROOT%/}"
 
 # Determine the base paths, use default if STYLUS_ROOT is not set
 RKE2_DATA_DIR=${STYLUS_ROOT}/var/lib/rancher/rke2
-RUN_DIR=${STYLUS_ROOT}/run/k3s
+RUN_DIR=/run/k3s
 KUBELET_PODS_DIR=${STYLUS_ROOT}/var/lib/kubelet/pods
-NETNS_CNI_DIR=${STYLUS_ROOT}/run/netns/cni-
+NETNS_CNI_DIR=/run/netns/cni-
 CNI_DIR=${STYLUS_ROOT}/var/lib/cni/
 
 export PATH=$PATH:${RKE2_DATA_DIR}/bin
