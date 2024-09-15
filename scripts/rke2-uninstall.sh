@@ -100,9 +100,7 @@ uninstall_remove_files() {
     $transactional_update rm -rf "${INSTALL_RKE2_ROOT}/share/rke2"
     
     # Removing directories with STYLUS_ROOT support
-    rm -rf ${STYLUS_ROOT}/etc/rancher/rke2
-    rm -rf ${STYLUS_ROOT}/etc/rancher/node
-    rm -d ${STYLUS_ROOT}/etc/rancher || true
+    rm -rf ${STYLUS_ROOT}/etc/rancher || true
     rm -rf ${STYLUS_ROOT}/etc/cni
     rm -rf ${STYLUS_ROOT}/opt/cni/bin
     rm -rf ${STYLUS_ROOT}/var/lib/kubelet || true
