@@ -1,0 +1,26 @@
+# install pre-commit on your system and then
+# run pre-commit install in this repository.
+# You can by pass commit hooks with:
+# git commit -n
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+  - repo: https://github.com/tekwizely/pre-commit-golang
+    rev: v1.0.0-rc.1
+    hooks:
+      - id: go-mod-tidy
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.61.0
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        description: Fast linters runner for Go. Note that only modified files are linted, so linters like 'unused' that need to scan all files won't work as expected.
+        entry: golangci-lint run --new-from-rev HEAD --whole-files -v
+        types: [go]
+        language: golang
+        require_serial: true
+        pass_filenames: false
+        verbose: true
