@@ -14,7 +14,7 @@ import (
 	"github.com/c3os-io/c3os/provider-rke2/pkg/types"
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
 	yip "github.com/mudler/yip/pkg/schema"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	kyaml "sigs.k8s.io/yaml"
 )
 
