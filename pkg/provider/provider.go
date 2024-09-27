@@ -7,9 +7,9 @@ import (
 	"net"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	_ "embed"
+
 	"github.com/c3os-io/c3os/provider-rke2/pkg/constants"
 	"github.com/c3os-io/c3os/provider-rke2/pkg/types"
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
@@ -18,15 +18,9 @@ import (
 	kyaml "sigs.k8s.io/yaml"
 )
 
-//go:embed mount.tmpl
-var mountTemplate string
-
 func ClusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	var stages []yip.Stage
 	clusterRootPath := getClusterRootPath(cluster)
-	if len(clusterRootPath) > 0 && clusterRootPath != "/" {
-		stages = append(stages, rootPathMountStage(clusterRootPath))
-	}
 
 	rke2Config := types.RKE2Config{
 		Token: cluster.ClusterToken,
@@ -209,45 +203,4 @@ func getNodeCIDR() string {
 
 func getClusterRootPath(cluster clusterplugin.Cluster) string {
 	return cluster.ProviderOptions[constants.ClusterRootPath]
-}
-
-func rootPathMountStage(rootPath string) yip.Stage {
-	mps := []types.MountPoint{
-		{
-			Name:   "etc-rancher",
-			Source: filepath.Join(rootPath, "etc/rancher"),
-			Target: "/etc/rancher",
-		},
-		{
-			Name:   "var-lib-rancher",
-			Source: filepath.Join(rootPath, "var/lib/rancher"),
-			Target: "/var/lib/rancher",
-		},
-	}
-
-	stage := yip.Stage{
-		Name: "Mount K3s data, conf directories",
-	}
-	for _, mp := range mps {
-		stage.Files = append(stage.Files, yip.File{
-			Path:        filepath.Join(constants.RunSystemdSystemDir, fmt.Sprintf("%s.mount", mp.Name)),
-			Permissions: 0644,
-			Content:     parseMountUnitFile(mp),
-		})
-
-		stage.Commands = append(stage.Commands,
-			fmt.Sprintf("mkdir -p %s", mp.Source),
-			fmt.Sprintf("mkdir -p %s", mp.Target),
-			fmt.Sprintf("systemctl enable --now %s.mount", mp.Name),
-		)
-	}
-
-	return stage
-}
-
-func parseMountUnitFile(mp types.MountPoint) string {
-	mount, _ := template.New("mount").Parse(mountTemplate)
-	var buf bytes.Buffer
-	_ = mount.Execute(&buf, mp)
-	return buf.String()
 }
