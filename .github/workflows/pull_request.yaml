@@ -17,7 +17,7 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - uses: earthly/actions-setup@v1
         with:
-          version: "v0.6.30"
+          version: "latest"
       - run: earthly --ci +lint
   build-provider-package:
     runs-on: ubuntu-latest
@@ -28,10 +28,10 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
       - uses: earthly/actions-setup@v1
         with:
-          version: "v0.6.30"
+          version: "latest"
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }} 
-      - run: earthly --ci  +provider-package-all-platforms --IMAGE_REPOSITORY=ghcr.io/kairos-io
+      - run: earthly --ci +provider-package-all-platforms --IMAGE_REPOSITORY=ghcr.io/kairos-io
