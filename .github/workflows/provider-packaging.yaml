@@ -1,6 +1,7 @@
 name: Publish provider packages
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - v*
@@ -40,5 +41,5 @@ jobs:
       - uses: earthly/actions-setup@v1
         with:
           version: "latest"
-      - run: echo "${{ secrets.GCR_DEV_PUBLIC_B64_TOKEN }}" | base64 -d | docker login -u _json_key --password-stdin https://gcr.io
-      - run: earthly --ci --push +provider-package-all-platforms --IMAGE_REPOSITORY=gcr.io/spectro-dev-public/kairos-io
+      - run: echo "${{ secrets.ARTIFACT_IMG_PUSH_EDGE }}" | base64 -d | docker login -u _json_key --password-stdin us-docker.pkg.dev
+      - run: earthly --ci --output --push +provider-package-all-platforms --IMAGE_REPOSITORY=us-docker.pkg.dev/palette-images/edge/kairos-io
