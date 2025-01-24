@@ -3,6 +3,11 @@
 # You can by pass commit hooks with:
 # git commit -n
 repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
   - repo: https://github.com/tekwizely/pre-commit-golang
     rev: v1.0.0-rc.1
     hooks:
