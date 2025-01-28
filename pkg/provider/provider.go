@@ -22,6 +22,8 @@ func ClusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	var stages []yip.Stage
 	clusterRootPath := getClusterRootPath(cluster)
 
+	stages = append(stages, getSwapDisableStage())
+
 	rke2Config := types.RKE2Config{
 		Token: cluster.ClusterToken,
 		// RKE2 server listens on 9345 for node registration https://docs.rke2.io/install/quickstart/#3-configure-the-rke2-agent-service
@@ -203,4 +205,14 @@ func getNodeCIDR() string {
 
 func getClusterRootPath(cluster clusterplugin.Cluster) string {
 	return cluster.ProviderOptions[constants.ClusterRootPath]
+}
+
+func getSwapDisableStage() yip.Stage {
+	return yip.Stage{
+		Name: "disable disk swap",
+		Commands: []string{
+			"sed -i '/ swap / s/^\\(.*\\)$/#\\1/g' /etc/fstab",
+			"swapoff -a",
+		},
+	}
 }
