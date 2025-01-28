@@ -37,6 +37,7 @@ BUILD_GOLANG:
     COPY . ./
     ARG BIN
     ARG SRC
+    ENV GO_LDFLAGS=" -X github.com/kairos-io/provider-rke2/pkg/version.Version=${VERSION} -w -s"
 
     IF $FIPS_ENABLED
         RUN go-build-fips.sh -a -o ${BIN} ./${SRC}

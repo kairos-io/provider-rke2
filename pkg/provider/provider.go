@@ -10,9 +10,9 @@ import (
 
 	_ "embed"
 
-	"github.com/c3os-io/c3os/provider-rke2/pkg/constants"
-	"github.com/c3os-io/c3os/provider-rke2/pkg/types"
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
+	"github.com/kairos-io/provider-rke2/pkg/constants"
+	"github.com/kairos-io/provider-rke2/pkg/types"
 	yip "github.com/mudler/yip/pkg/schema"
 	"gopkg.in/yaml.v3"
 	kyaml "sigs.k8s.io/yaml"
