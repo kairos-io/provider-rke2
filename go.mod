@@ -1,9 +1,11 @@
 module github.com/kairos-io/provider-rke2
 
-go 1.23.1
+go 1.24.2
+
+toolchain go1.24.3
 
 require (
-	github.com/kairos-io/kairos-sdk v0.7.2
+	github.com/kairos-io/kairos-sdk v0.9.3
 	github.com/mudler/go-pluggable v0.0.0-20230126220627-7710299a0ae5
 	github.com/mudler/yip v1.16.2
 	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af
@@ -14,7 +16,6 @@ require (
 
 require (
 	github.com/chuckpreslar/emission v0.0.0-20170206194824-a7ddd980baf9 // indirect
-	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -26,7 +27,7 @@ require (
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/twpayne/go-vfs/v4 v4.3.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
