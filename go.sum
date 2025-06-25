@@ -42,6 +42,8 @@ github.com/itchyny/timefmt-go v0.1.6 h1:ia3s54iciXDdzWzwaVKXZPbiXzxxnv1SPGFfM/my
 github.com/itchyny/timefmt-go v0.1.6/go.mod h1:RRDZYC5s9ErkjQvTvvU7keJjxUYzIISJGxm9/mAERQg=
 github.com/kairos-io/kairos-sdk v0.9.3 h1:je3Q0mfm1p4y3jO3k0P/SUp4NEax8IwLveDlnZBB8Yc=
 github.com/kairos-io/kairos-sdk v0.9.3/go.mod h1:O3si3aCkYsOyjjLF2jKKTKUYW9948WcB7xR0ivKbB6M=
+github.com/kairos-io/kairos-sdk v0.9.4 h1:cN4IVEPzNFHbu2/cTyX5CDtL+IGJdw7wSNLTrWwB4mU=
+github.com/kairos-io/kairos-sdk v0.9.4/go.mod h1:O3si3aCkYsOyjjLF2jKKTKUYW9948WcB7xR0ivKbB6M=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/pretty v0.3.1/go.mod h1:hoEshYVHaxMs3cyo3Yncou5ZscifuDolrwPKZanG3xk=
