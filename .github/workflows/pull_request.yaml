@@ -34,4 +34,4 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }} 
-      - run: earthly --ci +provider-package-all-platforms --IMAGE_REPOSITORY=ghcr.io/kairos-io
+      - run: earthly --ci +build-provider-package --IMAGE_REPOSITORY=ghcr.io/kairos-io
