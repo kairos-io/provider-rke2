@@ -8,7 +8,7 @@ require (
 	github.com/kairos-io/kairos-sdk v0.9.3
 	github.com/mudler/go-pluggable v0.0.0-20230126220627-7710299a0ae5
 	github.com/mudler/yip v1.16.2
-	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af
+	github.com/sirupsen/logrus v1.9.4-0.20251023124752-b61f268f75b6
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/yaml v1.6.0
@@ -25,7 +25,7 @@ require (
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
+	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/twpayne/go-vfs/v4 v4.3.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/sys v0.32.0 // indirect
