@@ -1,5 +1,5 @@
 #!/bin/sh
-set -ex
+set -x
 
 # Ensure the script is run as root
 if [ ! $(id -u) -eq 0 ]; then
@@ -37,9 +37,9 @@ if [ -r /etc/redhat-release ] || [ -r /etc/centos-release ] || [ -r /etc/oracle-
         INSTALL_RKE2_ROOT=${STYLUS_ROOT}/usr
     else
         INSTALL_RKE2_ROOT=${STYLUS_ROOT}/usr/local
-    fi 
+    fi
 # Check if the OS is SUSE
-elif [ "${ID_LIKE%%[ ]*}" = "suse" ]; then 
+elif [ "${ID_LIKE%%[ ]*}" = "suse" ]; then
     if rpm -q rke2-common >/dev/null 2>&1; then
         INSTALL_RKE2_ROOT=${STYLUS_ROOT}/usr
         if [ -x /usr/sbin/transactional-update ]; then
@@ -52,7 +52,7 @@ elif [ "${ID_LIKE%%[ ]*}" = "suse" ]; then
     fi
 # Default to /usr for other OSes
 else
-    INSTALL_RKE2_ROOT=${STYLUS_ROOT}/usr 
+    INSTALL_RKE2_ROOT=${STYLUS_ROOT}/usr
 fi
 
 # Uninstall killall script
@@ -98,12 +98,12 @@ uninstall_remove_files() {
     $transactional_update rm -f "${INSTALL_RKE2_ROOT}/bin/rke2"
     $transactional_update rm -f "${INSTALL_RKE2_ROOT}/bin/rke2-killall.sh"
     $transactional_update rm -rf "${INSTALL_RKE2_ROOT}/share/rke2"
-    
+
     # Removing directories with STYLUS_ROOT support
-    rm -rf ${STYLUS_ROOT}/etc/rancher || true
+    rm -rf ${STYLUS_ROOT}/etc/rancher
     rm -rf ${STYLUS_ROOT}/etc/cni
     rm -rf ${STYLUS_ROOT}/opt/cni/bin
-    rm -rf ${STYLUS_ROOT}/var/lib/kubelet || true
+    rm -rf ${STYLUS_ROOT}/var/lib/kubelet
     rm -rf "${RKE2_DATA_DIR}"
     rm -d ${STYLUS_ROOT}/var/lib/rancher || true
 
