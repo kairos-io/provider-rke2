@@ -66,11 +66,12 @@ build-provider:
 
 build-provider-package:
     DO +VERSION
+    ARG TARGETARCH
     ARG VERSION=$(cat VERSION)
     FROM scratch
     COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
     COPY scripts /opt/rke2/scripts
-    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2:${VERSION}
+    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2:${VERSION}-${TARGETARCH}
 
 build-provider-fips-package:
     DO +VERSION
@@ -158,3 +159,13 @@ provider-package-all-platforms:
 provider-fips-package-all-platforms:
      BUILD --platform=linux/amd64 +build-provider-fips-package
      #BUILD --platform=linux/arm64 +build-provider-fips-package
+
+provider-package-merge:
+    BUILD --platform=linux/amd64 --platform=linux/arm64 +provider-package-pull
+
+provider-package-pull:
+    DO +VERSION
+    ARG VERSION=$(cat VERSION)
+    ARG TARGETARCH
+    FROM ${IMAGE_REPOSITORY}/provider-rke2:${VERSION}-${TARGETARCH}
+    SAVE IMAGE --push ${IMAGE_REPOSITORY}/provider-rke2:${VERSION}
