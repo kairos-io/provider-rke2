@@ -1,4 +1,4 @@
-name: Developer Agent - RKE2 Provider
+name: Provider-rke2 Developer
 description: Implementation agent for Kairos RKE2 provider development
 
 instructions: |

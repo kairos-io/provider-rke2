@@ -1,4 +1,4 @@
-name: Planner Agent - RKE2 Provider
+name: Provider-rke2 Planner
 description: Strategic planning agent for Kairos RKE2 provider architecture and implementation
 
 instructions: |

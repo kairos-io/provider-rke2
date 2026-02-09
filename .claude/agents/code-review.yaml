@@ -1,4 +1,4 @@
-name: Code Review Agent - RKE2 Provider
+name: Provider-rke2 Code Review
 description: Code review and quality assurance agent for Kairos RKE2 provider
 
 instructions: |
