@@ -1,3 +1,16 @@
+---
+skill: RKE2 Provider Cluster Roles
+description: Skill documentation for provider-rke2
+type: general
+repository: provider-rke2
+team: edge
+topics: [kubernetes, provider, edge, cluster]
+difficulty: intermediate
+last_updated: 2026-02-09
+related_skills: []
+memory_references: []
+---
+
 # RKE2 Provider Cluster Roles
 
 ## Overview
