@@ -11,21 +11,34 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: docker-practice/actions-setup-docker@master
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
+        with:
+          platforms: all
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
       - uses: earthly/actions-setup@v1
         with:
           version: "latest"
       - run: earthly --ci +lint
+
   build-provider-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       packages: write
     steps:
-      - uses: actions/checkout@v5
-      - uses: docker-practice/actions-setup-docker@master
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
+        with:
+          platforms: all
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
       - uses: earthly/actions-setup@v1
         with:
           version: "latest"
@@ -33,5 +46,11 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }} 
-      - run: earthly --ci +build-provider-package --IMAGE_REPOSITORY=ghcr.io/kairos-io
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: earthly --ci --output +build-provider-package
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: go test ./...
