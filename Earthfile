@@ -23,7 +23,7 @@ build-cosign:
     SAVE ARTIFACT /ko-app/cosign cosign
 
 go-deps:
-    FROM us-docker.pkg.dev/palette-images/build-base-images/golang:${GOLANG_VERSION}-alpine
+    FROM us-central1-docker.pkg.dev/palette-images-dev/hardened-images/builder/golang:${GOLANG_VERSION}-alpine
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
@@ -82,9 +82,8 @@ build-provider-fips-package:
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2-fips:${VERSION}
 
 lint:
-    FROM golang:$GOLANG_VERSION
+    FROM +go-deps
     RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s $GOLINT_VERSION
-    WORKDIR /build
     COPY . .
     RUN golangci-lint run
 
