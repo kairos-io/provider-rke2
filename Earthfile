@@ -69,7 +69,7 @@ build-provider-package:
     ARG TARGETARCH
     ARG VERSION=$(cat VERSION)
     FROM scratch
-    COPY +build-provider/agent-provider-rke2 /system/providers/agent-provider-rke2
+    COPY +build-provider/agent-provider-rke2 /usr/local/system/providers/agent-provider-rke2
     COPY scripts /opt/rke2/scripts
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-rke2:${VERSION}-${TARGETARCH}
 
