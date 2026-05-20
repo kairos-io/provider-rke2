@@ -1,6 +1,6 @@
 module github.com/kairos-io/provider-rke2
 
-go 1.25.7
+go 1.25.10
 
 require (
 	github.com/kairos-io/kairos-sdk v0.9.3
