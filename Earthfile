@@ -5,7 +5,7 @@ ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.4.3
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
 ARG LUET_VERSION=0.35.1
-ARG GOLINT_VERSION=v2.12.2
+ARG GOLINT_VERSION=v2.1.6
 ARG GOLANG_VERSION=1.26.3
 
 ARG RKE2_VERSION=latest
@@ -82,7 +82,7 @@ build-provider-fips-package:
 
 lint:
     FROM golang:$GOLANG_VERSION
-    RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s $GOLINT_VERSION
+    RUN go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLINT_VERSION}
     WORKDIR /build
     COPY . .
     RUN golangci-lint run
