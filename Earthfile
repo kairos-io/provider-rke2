@@ -1,6 +1,10 @@
 VERSION 0.6
 FROM alpine
 
+ARG --global SPECTRO_VERSION=0.0.0-dev
+ARG --global UPSTREAM_VERSION=v4.9.0
+ARG --global VERSION=${UPSTREAM_VERSION}-spectro-${SPECTRO_VERSION}
+
 ARG BASE_IMAGE=quay.io/kairos/core-opensuse-leap:v2.4.3
 ARG IMAGE_REPOSITORY=quay.io/kairos
 
@@ -51,13 +55,9 @@ BUILD_GOLANG:
 
 VERSION:
     COMMAND
+    ARG VERSION                     # inherits from global (or --build-arg)
     FROM alpine
-    RUN apk add git
-
-    COPY . ./
-
-    RUN echo $(git describe --exact-match --tags || echo "v0.0.0-$(git rev-parse --short=8 HEAD)") > VERSION
-
+    RUN echo "$VERSION" > VERSION
     SAVE ARTIFACT VERSION VERSION
 
 build-provider:
