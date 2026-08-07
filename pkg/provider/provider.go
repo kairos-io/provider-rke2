@@ -110,7 +110,9 @@ func ClusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		yip.Stage{
 			Name: "Enable Systemd Services",
 			Commands: []string{
-				fmt.Sprintf("systemctl enable %s", systemName),
+				// A /run link is cleared each boot, so systemd can never start rke2 before this stage renders config.yaml.
+				fmt.Sprintf("systemctl disable %s", systemName),
+				fmt.Sprintf("systemctl enable --runtime %s", systemName),
 				fmt.Sprintf("systemctl restart %s", systemName),
 			},
 		})
