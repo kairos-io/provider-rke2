@@ -110,8 +110,15 @@ func ClusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		yip.Stage{
 			Name: "Enable Systemd Services",
 			Commands: []string{
-				fmt.Sprintf("systemctl enable %s", systemName),
-				fmt.Sprintf("systemctl restart %s", systemName),
+				// A /run link is cleared each boot, so systemd can never start rke2 before this stage renders config.yaml.
+				fmt.Sprintf("systemctl disable %s", systemName),
+				fmt.Sprintf("systemctl enable --runtime %s", systemName),
+				"systemctl daemon-reload",
+				// A node still holding the old persistent link may have auto-started rke2 before
+				// this stage rendered config.yaml; start is a no-op on an already-live unit.
+				// rke2 is Type=notify and spends ~seconds in "activating" during etcd reconciliation —
+				// is-active returns false during that window, so also match "activating" explicitly.
+				fmt.Sprintf("if systemctl is-active --quiet %[1]s || systemctl show -p ActiveState --value %[1]s | grep -q activating; then systemctl restart %[1]s; else systemctl start %[1]s; fi", systemName),
 			},
 		})
 
