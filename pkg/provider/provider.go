@@ -111,7 +111,8 @@ func ClusterProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 			Name: "Enable Systemd Services",
 			Commands: []string{
 				// A /run link is cleared each boot, so systemd can never start rke2 before this stage renders config.yaml.
-				fmt.Sprintf("systemctl disable %s", systemName),
+				// Not `systemctl disable`: on UKI the unit is a symlink into /opt/k8s, which disable deletes.
+				fmt.Sprintf("rm -f /etc/systemd/system/*.wants/%[1]s.service /etc/systemd/system/*.requires/%[1]s.service", systemName),
 				fmt.Sprintf("systemctl enable --runtime %s", systemName),
 				"systemctl daemon-reload",
 				// A node still holding the old persistent link may have auto-started rke2 before

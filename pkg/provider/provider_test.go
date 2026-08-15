@@ -43,8 +43,11 @@ func Test_systemdStageDoesNotPersistEnablement(t *testing.T) {
 			if !strings.Contains(joined, fmt.Sprintf("systemctl enable --runtime %s", systemName)) {
 				t.Errorf("stage does not runtime-enable %s:\n%s", systemName, joined)
 			}
-			if !strings.Contains(joined, fmt.Sprintf("systemctl disable %s", systemName)) {
+			if !strings.Contains(joined, fmt.Sprintf("/etc/systemd/system/*.wants/%s.service", systemName)) {
 				t.Errorf("stage does not clear a pre-existing persistent link for %s:\n%s", systemName, joined)
+			}
+			if strings.Contains(joined, fmt.Sprintf("systemctl disable %s", systemName)) {
+				t.Errorf("stage disables %s; on UKI that deletes the unit symlink:\n%s", systemName, joined)
 			}
 		})
 	}
