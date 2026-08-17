@@ -26,7 +26,7 @@ require (
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/twpayne/go-vfs/v4 v4.3.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/sys v0.46.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
