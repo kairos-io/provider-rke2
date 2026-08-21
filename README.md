@@ -6,6 +6,12 @@
 > [kairos-io/kairos](https://github.com/kairos-io/kairos/issues), including
 > issues about this repository. Every Kairos issue lives in one place, so you
 > never have to work out which repository to file against.
+>
+> **This provider is community supported.** It is maintained on a best effort
+> basis, and it is moving to its own organization. Until it moves,
+> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues) is still the
+> place to file. Expect community support and best effort, not a maintainer
+> response time.
 
 This provider will configure a RKE2 installation based on the cluster section of cloud init.
 
