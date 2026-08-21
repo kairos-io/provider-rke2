@@ -2,9 +2,10 @@
 
 ---
 
-> **Community supported, best effort.** This provider is moving to its own
-> organization. Until then, open issues on
-> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues).
+> [!WARNING]
+> **Community supported.** This provider is moving to its own organization.
+> Until then, open issues on [kairos-io/kairos](https://github.com/kairos-io/kairos/issues)
+> for best effort support.
 
 This provider will configure a RKE2 installation based on the cluster section of cloud init.
 
