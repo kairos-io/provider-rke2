@@ -2,6 +2,11 @@
 
 ---
 
+> **Found a bug, or want to request a feature?** Open it on
+> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues), including
+> issues about this repository. Every Kairos issue lives in one place, so you
+> never have to work out which repository to file against.
+
 This provider will configure a RKE2 installation based on the cluster section of cloud init.
 
 ## Configuration
