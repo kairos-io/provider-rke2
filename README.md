@@ -2,16 +2,9 @@
 
 ---
 
-> **Found a bug, or want to request a feature?** Open it on
-> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues), including
-> issues about this repository. Every Kairos issue lives in one place, so you
-> never have to work out which repository to file against.
->
-> **This provider is community supported.** It is maintained on a best effort
-> basis, and it is moving to its own organization. Until it moves,
-> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues) is still the
-> place to file. Expect community support and best effort, not a maintainer
-> response time.
+> **Community supported, best effort.** This provider is moving to its own
+> organization. Until then, open issues on
+> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues).
 
 This provider will configure a RKE2 installation based on the cluster section of cloud init.
 
