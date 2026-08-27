@@ -2,6 +2,11 @@
 
 ---
 
+> [!WARNING]
+> **Community supported.** Support here is done by the community that manages
+> this repository, not by the Kairos team. Open issues here, on this
+> repository. It is moving to its own organization to avoid that confusion.
+
 This provider will configure a RKE2 installation based on the cluster section of cloud init.
 
 ## Configuration
